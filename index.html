@@ -400,10 +400,11 @@
     <div class="code"><div class="file">TERMINAL<button type="button">COPY</button></div><pre>mkdir codemode-orders-lab
 cd codemode-orders-lab
 npm init -y
-npm i @cloudflare/codemode agents @modelcontextprotocol/sdk@1 zod
+npm i @cloudflare/codemode agents @modelcontextprotocol/sdk@1 @modelcontextprotocol/server@2.4.0 zod
 npm i -D wrangler
 mkdir src</pre></div>
     <p>Keep <code class="inline">package-lock.json</code> and use <code class="inline">npm ci</code> to reproduce the install exactly.</p>
+    <p><b>Why the extra package?</b> Newer releases of <code class="inline">agents</code> (0.33 and later) import <code class="inline">@modelcontextprotocol/server</code>, and npm doesn't install it for you. Without it, <code class="inline">wrangler dev</code> fails with <code class="inline">Could not resolve "@modelcontextprotocol/server"</code>. This lab was tested on 7 Nov 2026 with agents 0.33.0, @cloudflare/codemode 0.5.6 and wrangler 4.158.0, with no Cloudflare login.</p>
 
     <h3><span class="step-num">STEP 2</span>Add the Worker Loader binding</h3>
     <p>Save this as <code class="inline">wrangler.jsonc</code> at the project root. <code class="inline">LOADER</code> is the binding the SDK uses to create the isolated runtime.</p>
@@ -580,7 +581,7 @@ npx -y @modelcontextprotocol/inspector@v1-latest</pre></div>
 
     <div class="callout">
       <span class="label">COMMON SETUP ISSUES</span>
-      <p>If Wrangler can't see <code class="inline">LOADER</code>, check the binding name and start from the project root. If the Inspector shows no tools, check the port, the path and that you picked Streamable HTTP. If SDK imports fail, compare your installed versions with the current Cloudflare build guide. <a href="https://developers.cloudflare.com/agents/model-context-protocol/guides/build-codemode-mcp-server/" target="_blank" rel="noopener">[4]</a></p>
+      <p>If Wrangler can't see <code class="inline">LOADER</code>, check the binding name and start from the project root. If the Inspector shows no tools, check the port, the path and that you picked Streamable HTTP. If the build says it can't resolve <code class="inline">@modelcontextprotocol/server</code>, run <code class="inline">npm i @modelcontextprotocol/server@2.4.0</code> and restart Wrangler. If port 8787 is already in use, pick another port, such as <code class="inline">--port 8799</code>, and use it in the Inspector URL. If other SDK imports fail, compare your installed versions with the current Cloudflare build guide. <a href="https://developers.cloudflare.com/agents/model-context-protocol/guides/build-codemode-mcp-server/" target="_blank" rel="noopener">[4]</a></p>
     </div>
   </section>
 
